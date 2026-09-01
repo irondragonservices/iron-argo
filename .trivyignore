@@ -1,0 +1,31 @@
+# Findings inside the cloudflared binary itself, which is Cloudflare's build,
+# not ours. There is no newer release to move to: 2026.8.3 is the latest, and
+# it is compiled with Go 1.26.4 against golang.org/x/crypto v0.53.0.
+#
+# The alternative is to compile cloudflared ourselves from the tagged source
+# with a current toolchain and a bumped x/crypto. That would clear these, and
+# it would also mean shipping a cloudflared that Cloudflare did not build, did
+# not sign and will not support — for a daemon whose whole job is holding an
+# authenticated tunnel into your network. Taking their binary is the more
+# defensible of the two, so these are suppressed on the pull request gate only.
+#
+# They are NOT suppressed anywhere it matters:
+#   - the release workflow scans without a gate, so the SARIF still carries them
+#   - the nightly re-scan still opens and updates the tracking issue
+#
+# Every line expires. When it does, the gate blocks again and somebody has to
+# look at whether Cloudflare has shipped a fix — which is the point.
+
+# golang.org/x/crypto/ssh v0.53.0 -> fixed in 0.55.0
+CVE-2026-56854 exp:2026-10-01
+
+# Go stdlib 1.26.4
+CVE-2026-33818 exp:2026-10-01
+CVE-2026-39821 exp:2026-10-01
+CVE-2026-39822 exp:2026-10-01
+CVE-2026-46600 exp:2026-10-01
+CVE-2026-56853 exp:2026-10-01
+CVE-2026-56858 exp:2026-10-01
+CVE-2026-56859 exp:2026-10-01
+CVE-2026-56860 exp:2026-10-01
+CVE-2026-56862 exp:2026-10-01
