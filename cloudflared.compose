@@ -6,11 +6,11 @@ networks:
         internal: true
 
 services:
-    argo:
-        container_name: argo
-        hostname: argo
+    cloudflared:
+        container_name: cloudflared
+        hostname: cloudflared
 
-        image: "ironpeakservices/iron-argo"
+        image: "ghcr.io/irondragonservices/iron-cloudflared"
 
         tty: false
 

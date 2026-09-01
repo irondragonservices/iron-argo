@@ -29,7 +29,7 @@ FROM cloudflare/cloudflared:2026.8.3 AS cf
 
 FROM scratch
 
-LABEL org.opencontainers.image.source="https://github.com/irondragonservices/iron-argo"
+LABEL org.opencontainers.image.source="https://github.com/irondragonservices/iron-cloudflared"
 LABEL org.opencontainers.image.description="Hardened base image for running cloudflared"
 
 # add-in our unprivileged user

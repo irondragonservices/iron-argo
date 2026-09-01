@@ -1,14 +1,24 @@
-# irondragonservices/iron-argo
+# irondragonservices/iron-cloudflared
 
 Hardened image for running `cloudflared` — Cloudflare Tunnel.
 
-Forked from [ironpeakservices/iron-argo](https://github.com/ironpeakservices/iron-argo).
+Forked from [ironpeakservices/iron-argo](https://github.com/ironpeakservices/iron-argo),
+and renamed — see below.
+
+> **This repository used to be `iron-argo`.** Cloudflare shipped this product as
+> *Argo Tunnel* and the daemon has always been `cloudflared`; they renamed the
+> product to *Cloudflare Tunnel* around 2021 and narrowed "Argo" to their
+> smart-routing feature. In 2026 the old name reads as
+> [Argo CD](https://argo-cd.readthedocs.io), which is a completely unrelated
+> thing. GitHub redirects the repository, but **the container image does not
+> redirect**: `ghcr.io/irondragonservices/iron-argo` is gone. Pull
+> `ghcr.io/irondragonservices/iron-cloudflared` instead.
 
 Cloudflare's own `cloudflared` release in a `scratch` image with nothing but an
 unprivileged account, CA certificates and a writable `/tmp`. Runs as uid 1000.
 
 ```sh
-docker pull ghcr.io/irondragonservices/iron-argo:2026.8.3
+docker pull ghcr.io/irondragonservices/iron-cloudflared:2026.8.3
 ```
 
 The tag tracks the cloudflared release.
@@ -18,7 +28,7 @@ The tag tracks the cloudflared release.
 ```sh
 docker run \
   -e TUNNEL_TOKEN=... \
-  ghcr.io/irondragonservices/iron-argo:2026 \
+  ghcr.io/irondragonservices/iron-cloudflared:2026 \
   --no-autoupdate tunnel run
 ```
 
@@ -31,17 +41,17 @@ To supply a credentials file, mount it and point at it:
 
 ```sh
 docker run -v ./creds.json:/etc/cloudflared/creds.json:ro \
-  ghcr.io/irondragonservices/iron-argo:2026 \
+  ghcr.io/irondragonservices/iron-cloudflared:2026 \
   --no-autoupdate tunnel --cred-file /etc/cloudflared/creds.json run my-tunnel
 ```
 
 ## Verifying what you pulled
 
 ```sh
-cosign verify ghcr.io/irondragonservices/iron-argo:2026 \
+cosign verify ghcr.io/irondragonservices/iron-cloudflared:2026 \
   --certificate-identity-regexp '^https://github\.com/irondragonservices/\.github/\.github/workflows/image-(release|refresh)\.yml@refs/heads/main$' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  --certificate-github-workflow-repository irondragonservices/iron-argo
+  --certificate-github-workflow-repository irondragonservices/iron-cloudflared
 ```
 
 Be precise about the identity. The signature is produced by the shared
