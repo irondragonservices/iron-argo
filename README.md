@@ -69,27 +69,28 @@ when the package set has actually changed, and it signs what it pushes.
 
 ## Known findings
 
-Every vulnerability the scanner reports against this image lives inside the
+Every vulnerability a scanner reports against this image lives inside the
 `cloudflared` binary, which is Cloudflare's build. As of 2026.8.3 — the latest
-release — that is Go 1.26.4 and `golang.org/x/crypto` v0.53.0, carrying one
-CRITICAL (`CVE-2026-56854`, `x/crypto/ssh`) and nine HIGH stdlib findings.
+release — that is Go 1.26.4 against `golang.org/x/crypto` v0.53.0.
 
 There is no newer release to move to. The alternative is compiling
 `cloudflared` here from the tagged source with a current toolchain and a bumped
-`x/crypto`, which would clear all ten — and would also mean shipping a
+`x/crypto`, which would clear them — and would also mean shipping a
 `cloudflared` that Cloudflare did not build, did not sign and will not support,
 for a daemon whose whole job is holding an authenticated tunnel into your
 network. Taking their binary is the more defensible of the two.
 
-So they are listed in [`.trivyignore`](.trivyignore) with expiry dates, and
-suppressed **on the pull request gate only**. The release scan runs without a
-gate, so the SARIF uploaded to code scanning still carries them, and the
-nightly re-scan still opens and updates the tracking issue. When the dates pass
-the gate blocks again and somebody has to check whether Cloudflare has shipped
-a fix.
+These findings used to sit in a `.trivyignore` with expiry dates, because the
+gate was raw Trivy blocking on any fixable `CRITICAL`/`HIGH`. It is
+[DragonGuard](https://github.com/DragonSecurity/dragonguard) now, which scores
+each finding against reachability, exploitability and this asset's context
+rather than reading a severity label off the advisory. Under that scoring they
+come out medium and low, the image scores 80 overall, and the gate passes on
+the merits — so the suppression is gone. Nothing is hidden: they are all still
+in the SARIF uploaded to code scanning, and the nightly re-scan still reports
+them.
 
-If that trade is not one you want to make, build from source and pin your own
-toolchain.
+That is the difference between suppressing a finding and understanding it.
 
 ## Changes from upstream
 
